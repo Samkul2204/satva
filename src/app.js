@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import foodRoutes from "./routes/foods.routes.js";
+import foodRoutes from "./src/routes/foods.routes.js";
 
 const app = express();
 
@@ -13,5 +13,9 @@ app.get("/", (req, res) => {
 
 app.use("/foods", foodRoutes);
 
+app.use((err, req, res, next) => {
+  console.error("🔥 UNHANDLED ERROR:", err);
+  res.status(500).json({ error: err.message });
+});
 
 export default app;
