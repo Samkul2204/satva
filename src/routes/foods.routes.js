@@ -1,5 +1,5 @@
 import express from "express";
-import pool from "../config/db.js";
+import pool from "../../config/db.js";
 
 const router = express.Router();
 
@@ -34,19 +34,27 @@ router.post("/", async (req, res) => {
 
 /* Get all foods */
 router.get("/", async (req, res) => {
-  const result = await pool.query(
-    "SELECT * FROM foods ORDER BY created_at DESC"
-  );
-  res.json(result.rows);
+  try {
+    const result = await pool.query(
+      "SELECT * FROM foods ORDER BY created_at DESC"
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-/* Get by category */
+/* Get foods by category */
 router.get("/category/:category", async (req, res) => {
-  const result = await pool.query(
-    "SELECT * FROM foods WHERE category = $1",
-    [req.params.category]
-  );
-  res.json(result.rows);
+  try {
+    const result = await pool.query(
+      "SELECT * FROM foods WHERE category = $1",
+      [req.params.category]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 export default router;

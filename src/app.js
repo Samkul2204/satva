@@ -12,3 +12,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/foods", foodRoutes);
+
+
+export default app;
